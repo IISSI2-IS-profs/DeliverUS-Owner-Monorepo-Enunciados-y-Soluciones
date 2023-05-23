@@ -57,6 +57,10 @@ module.exports = {
         ],
         defaultValue: 'offline'
       },
+      sortByPrice: {
+        type: Sequelize.BOOLEAN,
+        defaltValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
