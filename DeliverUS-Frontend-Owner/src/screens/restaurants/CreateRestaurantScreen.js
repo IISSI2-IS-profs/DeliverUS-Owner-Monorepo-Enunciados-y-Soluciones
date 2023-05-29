@@ -14,7 +14,7 @@ import { showMessage } from 'react-native-flash-message'
 import { ErrorMessage, Formik } from 'formik'
 import TextError from '../../components/TextError'
 
-export default function CreateRestaurantScreen ({ navigation }) {
+export default function CreateRestaurantScreen ({ navigation, route }) { // SOLUCION: añadido route
   const [open, setOpen] = useState(false)
   const [restaurantCategories, setRestaurantCategories] = useState([])
   const [backendErrors, setBackendErrors] = useState()
@@ -77,7 +77,7 @@ export default function CreateRestaurantScreen ({ navigation }) {
       }
     }
     fetchRestaurantCategories()
-  }, [])
+  }, [route]) // SOLUCION: añadido route
 
   useEffect(() => {
     (async () => {
@@ -167,7 +167,7 @@ export default function CreateRestaurantScreen ({ navigation }) {
                 value={values.restaurantCategoryId}
                 items={restaurantCategories}
                 setOpen={setOpen}
-                onSelectItem={ item => {
+                onSelectItem={item => {
                   setFieldValue('restaurantCategoryId', item.value)
                 }}
                 setItems={setRestaurantCategories}
@@ -176,7 +176,26 @@ export default function CreateRestaurantScreen ({ navigation }) {
                 style={{ backgroundColor: GlobalStyles.brandBackground }}
                 dropDownStyle={{ backgroundColor: '#fafafa' }}
               />
-              <ErrorMessage name={'restaurantCategoryId'} render={msg => <TextError>{msg}</TextError> }/>
+              <ErrorMessage name={'restaurantCategoryId'} render={msg => <TextError>{msg}</TextError>} />
+
+              {/* SOLUCION */}
+              <Pressable
+                onPress={() => navigation.navigate('CreateRestaurantCategoryScreen')}
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed
+                      ? GlobalStyles.brandGreenTap
+                      : GlobalStyles.brandGreen
+                  },
+                  styles.button
+                ]}>
+                <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
+                  <MaterialCommunityIcons name='folder-plus-outline' color={'white'} size={20} />
+                  <TextRegular textStyle={styles.text}>
+                    New category
+                  </TextRegular>
+                </View>
+              </Pressable>
 
               <Pressable onPress={() =>
                 pickImage(
@@ -218,12 +237,12 @@ export default function CreateRestaurantScreen ({ navigation }) {
                   },
                   styles.button
                 ]}>
-              <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-                <MaterialCommunityIcons name='content-save' color={'white'} size={20}/>
-                <TextRegular textStyle={styles.text}>
-                  Save
-                </TextRegular>
-              </View>
+                <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
+                  <MaterialCommunityIcons name='content-save' color={'white'} size={20} />
+                  <TextRegular textStyle={styles.text}>
+                    Save
+                  </TextRegular>
+                </View>
               </Pressable>
             </View>
           </View>
