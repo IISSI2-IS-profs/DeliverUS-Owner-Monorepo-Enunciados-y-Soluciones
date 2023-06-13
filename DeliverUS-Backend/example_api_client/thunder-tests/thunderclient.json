@@ -3465,5 +3465,432 @@
         "value": "422"
       }
     ]
+  },
+  {
+    "_id": "88c62b71-bbf3-4bde-aac5-a442af8ef464",
+    "colId": "6afcdfbe-f7b7-44e4-8c31-43f2d2c54322",
+    "containerId": "3f464ff7-39d0-43b3-a275-97099f0b3e23",
+    "name": "CREATE RESTAURANT CHECK ONE DISCOUNT FIELDS PRESENT",
+    "url": "{{base_url}}/restaurants",
+    "method": "POST",
+    "sortNum": 32500,
+    "created": "2023-05-10T21:57:13.276Z",
+    "modified": "2023-05-18T11:14:00.411Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "name",
+          "value": "Un solo campo de descuento"
+        },
+        {
+          "name": "description",
+          "value": "Comida Sevillana"
+        },
+        {
+          "name": "address",
+          "value": "Calle Antonia Díaz, 19"
+        },
+        {
+          "name": "postalCode",
+          "value": "41001"
+        },
+        {
+          "name": "url",
+          "value": "http://www.bodeguitasantonioromero.com/"
+        },
+        {
+          "name": "email",
+          "value": "info@bodeguitasantonioromero.com"
+        },
+        {
+          "name": "phone",
+          "value": "+34654223939"
+        },
+        {
+          "name": "shippingCosts",
+          "value": "3.5"
+        },
+        {
+          "name": "restaurantCategoryId",
+          "value": "1"
+        },
+        {
+          "name": "discount",
+          "value": "20"
+        }
+      ],
+      "files": [
+        {
+          "name": "logo",
+          "value": "../example_assets/logo.jpeg"
+        },
+        {
+          "name": "heroImage",
+          "value": "../example_assets/heroImage.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
+  },
+  {
+    "_id": "2d3fe8c5-d9f7-4284-9d6a-8ea8230a2be1",
+    "colId": "6afcdfbe-f7b7-44e4-8c31-43f2d2c54322",
+    "containerId": "3f464ff7-39d0-43b3-a275-97099f0b3e23",
+    "name": "CREATE RESTAURANT BOTH DISCOUNT FIELDS",
+    "url": "{{base_url}}/restaurants",
+    "method": "POST",
+    "sortNum": 31250,
+    "created": "2023-05-10T22:08:47.072Z",
+    "modified": "2023-05-18T11:10:26.031Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "name",
+          "value": "Bodeguita Antonio Romero"
+        },
+        {
+          "name": "description",
+          "value": "Comida Sevillana"
+        },
+        {
+          "name": "address",
+          "value": "Calle Antonia Díaz, 19"
+        },
+        {
+          "name": "postalCode",
+          "value": "41001"
+        },
+        {
+          "name": "url",
+          "value": "http://www.bodeguitasantonioromero.com/"
+        },
+        {
+          "name": "email",
+          "value": "info@bodeguitasantonioromero.com"
+        },
+        {
+          "name": "phone",
+          "value": "+34654223939"
+        },
+        {
+          "name": "shippingCosts",
+          "value": "3.5"
+        },
+        {
+          "name": "restaurantCategoryId",
+          "value": "1"
+        },
+        {
+          "name": "discount",
+          "value": "20"
+        },
+        {
+          "name": "discountCode",
+          "value": "REBAJAS{{#number, 0, 999}}"
+        }
+      ],
+      "files": [
+        {
+          "name": "logo",
+          "value": "../example_assets/logo.jpeg"
+        },
+        {
+          "name": "heroImage",
+          "value": "../example_assets/heroImage.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": [
+      {
+        "type": "set-env-var",
+        "custom": "json.id",
+        "action": "setto",
+        "value": "{{last_created_restaurant}}"
+      },
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
+  },
+  {
+    "_id": "2f674ee7-d007-4d35-9fb5-8b3b3bf46b24",
+    "colId": "6afcdfbe-f7b7-44e4-8c31-43f2d2c54322",
+    "containerId": "3f464ff7-39d0-43b3-a275-97099f0b3e23",
+    "name": "CREATE RESTAURANT discount code length",
+    "url": "{{base_url}}/restaurants",
+    "method": "POST",
+    "sortNum": 31875,
+    "created": "2023-05-10T22:27:22.863Z",
+    "modified": "2023-05-18T11:11:00.569Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "name",
+          "value": "Bodeguita Antonio Romero"
+        },
+        {
+          "name": "description",
+          "value": "Comida Sevillana"
+        },
+        {
+          "name": "address",
+          "value": "Calle Antonia Díaz, 19"
+        },
+        {
+          "name": "postalCode",
+          "value": "41001"
+        },
+        {
+          "name": "url",
+          "value": "http://www.bodeguitasantonioromero.com/"
+        },
+        {
+          "name": "email",
+          "value": "info@bodeguitasantonioromero.com"
+        },
+        {
+          "name": "phone",
+          "value": "+34654223939"
+        },
+        {
+          "name": "shippingCosts",
+          "value": "3.5"
+        },
+        {
+          "name": "restaurantCategoryId",
+          "value": "1"
+        },
+        {
+          "name": "discount",
+          "value": "20"
+        },
+        {
+          "name": "discountCode",
+          "value": "REBAJASMASDE10CARACTERES"
+        }
+      ],
+      "files": [
+        {
+          "name": "logo",
+          "value": "../example_assets/logo.jpeg"
+        },
+        {
+          "name": "heroImage",
+          "value": "../example_assets/heroImage.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "422"
+      }
+    ]
+  },
+  {
+    "_id": "b521a91e-3658-4493-9135-28f89641ff76",
+    "colId": "6afcdfbe-f7b7-44e4-8c31-43f2d2c54322",
+    "containerId": "3f464ff7-39d0-43b3-a275-97099f0b3e23",
+    "name": "CREATE RESTAURANT 0 discount",
+    "url": "{{base_url}}/restaurants",
+    "method": "POST",
+    "sortNum": 32187.5,
+    "created": "2023-05-10T22:27:55.098Z",
+    "modified": "2023-05-18T11:11:13.731Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "name",
+          "value": "Bodeguita Antonio Romero"
+        },
+        {
+          "name": "description",
+          "value": "Comida Sevillana"
+        },
+        {
+          "name": "address",
+          "value": "Calle Antonia Díaz, 19"
+        },
+        {
+          "name": "postalCode",
+          "value": "41001"
+        },
+        {
+          "name": "url",
+          "value": "http://www.bodeguitasantonioromero.com/"
+        },
+        {
+          "name": "email",
+          "value": "info@bodeguitasantonioromero.com"
+        },
+        {
+          "name": "phone",
+          "value": "+34654223939"
+        },
+        {
+          "name": "shippingCosts",
+          "value": "3.5"
+        },
+        {
+          "name": "restaurantCategoryId",
+          "value": "1"
+        },
+        {
+          "name": "discount",
+          "value": "0"
+        },
+        {
+          "name": "discountCode",
+          "value": "REBAJILLAS2"
+        }
+      ],
+      "files": [
+        {
+          "name": "logo",
+          "value": "../example_assets/logo.jpeg"
+        },
+        {
+          "name": "heroImage",
+          "value": "../example_assets/heroImage.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "422"
+      }
+    ]
+  },
+  {
+    "_id": "23ab2040-ee03-4b12-9ca5-029c117c331b",
+    "colId": "6afcdfbe-f7b7-44e4-8c31-43f2d2c54322",
+    "containerId": "3f464ff7-39d0-43b3-a275-97099f0b3e23",
+    "name": "CREATE RESTAURANT gt 99 discount",
+    "url": "{{base_url}}/restaurants",
+    "method": "POST",
+    "sortNum": 32421.9,
+    "created": "2023-05-10T22:31:48.889Z",
+    "modified": "2023-05-18T11:11:23.836Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "name",
+          "value": "Bodeguita Antonio Romero"
+        },
+        {
+          "name": "description",
+          "value": "Comida Sevillana"
+        },
+        {
+          "name": "address",
+          "value": "Calle Antonia Díaz, 19"
+        },
+        {
+          "name": "postalCode",
+          "value": "41001"
+        },
+        {
+          "name": "url",
+          "value": "http://www.bodeguitasantonioromero.com/"
+        },
+        {
+          "name": "email",
+          "value": "info@bodeguitasantonioromero.com"
+        },
+        {
+          "name": "phone",
+          "value": "+34654223939"
+        },
+        {
+          "name": "shippingCosts",
+          "value": "3.5"
+        },
+        {
+          "name": "restaurantCategoryId",
+          "value": "1"
+        },
+        {
+          "name": "discount",
+          "value": "100"
+        },
+        {
+          "name": "discountCode",
+          "value": "REBAJILLAS3"
+        }
+      ],
+      "files": [
+        {
+          "name": "logo",
+          "value": "../example_assets/logo.jpeg"
+        },
+        {
+          "name": "heroImage",
+          "value": "../example_assets/heroImage.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "422"
+      }
+    ]
   }
 ]
