@@ -47,6 +47,12 @@ module.exports = {
       heroImage: {
         type: Sequelize.STRING
       },
+      // BEGIN SOLUTION
+      discountPercentage: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      // END SOLUTION
       status: {
         type: Sequelize.ENUM,
         values: [

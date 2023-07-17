@@ -64,6 +64,24 @@ exports.update = async function (req, res) {
   }
 }
 
+// BEGIN SOLUTION
+// This method promotes or demotes the product whose id is passed 
+// as a parameter in the endpoint path, changing the previous value of the promote property.
+exports.togglepromoted = async function (req, res) {
+  try {
+    const productToBePromoted = await Product.findByPk(req.params.productId)
+    await Product.update(
+      { promoted: !productToBePromoted.promoted },
+      { where: { id: productToBePromoted.id } }
+    )
+    const updatedProduct = await Product.findByPk(req.params.productId)
+    res.json(updatedProduct)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+// END SOLUTION
+
 exports.destroy = async function (req, res) {
   try {
     const result = await Product.destroy({ where: { id: req.params.productId } })
@@ -93,10 +111,10 @@ exports.popular = async function (req, res) {
           as: 'restaurant',
           attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
           include:
-        {
-          model: RestaurantCategory,
-          as: 'restaurantCategory'
-        }
+          {
+            model: RestaurantCategory,
+            as: 'restaurantCategory'
+          }
         }
         ],
         attributes: {
@@ -107,7 +125,7 @@ exports.popular = async function (req, res) {
         },
         group: ['orders.OrderProducts.productId'],
         order: [[Sequelize.col('soldProductCount'), 'DESC']]
-      // limit: 3 //this is not supported when M:N associations are involved
+        // limit: 3 //this is not supported when M:N associations are involved
       })
     res.json(topProducts.slice(0, 3))
   } catch (err) {

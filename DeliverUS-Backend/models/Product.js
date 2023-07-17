@@ -1,5 +1,7 @@
 'use strict'
-const { Model } = require('sequelize')
+const {
+  Model
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     /**
@@ -14,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         unityPrice: DataTypes.DOUBLE
       })
 
-      Product.belongsTo(models.Restaurant, { foreignKey: 'restaurantId', as: 'restaurant', onDelete: 'cascade' })
+      Product.belongsTo(models.Restaurant, { foreignKey: 'restaurantId', as: 'restaurant' , onDelete: 'cascade'})
       Product.belongsTo(models.ProductCategory, { foreignKey: 'productCategoryId', as: 'productCategory' })
       Product.belongsToMany(models.Order, { as: 'orders', through: OrderProducts })
     }
@@ -27,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     order: DataTypes.INTEGER,
     availability: DataTypes.BOOLEAN,
     restaurantId: DataTypes.INTEGER,
+    // BEGIN SOLUTION
+    // Determines whether or not the product is promoted.
+    promoted: DataTypes.BOOLEAN,
+    // END SOLUTION
     productCategoryId: DataTypes.INTEGER
   }, {
     sequelize,

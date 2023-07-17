@@ -167,7 +167,7 @@ module.exports = {
   createNProducts: (numProducts, restaurantId) => {
     const productsArray = []
     for (let i = 0; i < numProducts; i++) {
-      productsArray[i] = { name: 'Product #' + i, description: 'Description #' + i, price: i, image: process.env.PRODUCTS_FOLDER + '/agua.png', order: i, availability: true, restaurantId, productCategoryId: 5 }
+      productsArray[i] = { name: 'Product #' + i, description: 'Description #' + i, price: i, image: process.env.PRODUCTS_FOLDER + '/agua.png', order: i, availability: true, restaurantId: restaurantId, productCategoryId: 5 }
     }
     return productsArray
   }

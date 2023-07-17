@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     logo: DataTypes.STRING,
     heroImage: DataTypes.STRING,
+    // BEGIN SOLUTION
+    // Percentage discount between 0 and 100 (in percentage)
+    discountPercentage: DataTypes.INTEGER,
+    // END SOLUTION
     status: {
       type: DataTypes.ENUM,
       values: [

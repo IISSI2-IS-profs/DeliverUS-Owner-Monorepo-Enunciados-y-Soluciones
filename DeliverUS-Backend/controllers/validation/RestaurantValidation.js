@@ -25,7 +25,11 @@ module.exports = {
     }).withMessage('Please upload an image with format (jpeg, png).'),
     check('logo').custom((value, { req }) => {
       return checkFileMaxSize(req, 'logo', maxFileSize)
-    }).withMessage('Maximum file size of ' + maxFileSize / 1000000 + 'MB')
+    }).withMessage('Maximum file size of ' + maxFileSize / 1000000 + 'MB'),
+    // BEGIN SOLUTION
+    // Check generic validations for discount percentage.
+    check('discountPercentage').exists().isInt({ min: 0, max: 100 }).toInt(),
+    // END SOLUTION
   ],
   update: [
     check('name').exists().isString().isLength({ min: 1, max: 255 }).trim(),
@@ -49,6 +53,10 @@ module.exports = {
     }).withMessage('Please upload an image with format (jpeg, png).'),
     check('logo').custom((value, { req }) => {
       return checkFileMaxSize(req, 'logo', maxFileSize)
-    }).withMessage('Maximum file size of ' + maxFileSize / 1000000 + 'MB')
+    }).withMessage('Maximum file size of ' + maxFileSize / 1000000 + 'MB'),
+    // BEGIN SOLUTION
+    // Check generic validations for discount percentage.
+    check('discountPercentage').exists().isInt({ min: 0, max: 100 }).toFloat(),
+    // END SOLUTION
   ]
 }

@@ -1,6 +1,8 @@
 const { check } = require('express-validator')
 const models = require('../../models')
+const Product = models.Product
 const Order = models.Order
+const Restaurant = models.Restaurant
 
 const checkOrderPending = async (value, { req }) => {
   try {
@@ -72,7 +74,7 @@ module.exports = {
 
   ],
   // TODO: Include validation rules for destroying an order that should check if the order is in the 'pending' state
-  destroy: [
+  destroy:[
 
   ],
   confirm: [

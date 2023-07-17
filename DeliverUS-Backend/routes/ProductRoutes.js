@@ -34,6 +34,18 @@ module.exports = (options) => {
     .get(
       ProductController.popular
     )
+  // BEGIN SOLUTION
+  // Path for the endpoint responsible for setting the promote property 
+  // of the product based on the previous value.
+  app.route('/products/:productId/togglepromoted')
+    .patch(
+      middlewares.isLoggedIn,
+      middlewares.hasRole('owner'),
+      middlewares.checkEntityExists(Product, 'productId'),
+      middlewares.checkProductOwnership,
+      middlewares.checkRestaurantDiscount,
+      ProductController.togglepromoted)
+  // END SOLUTION
   app.route('/products/:productId')
     .get(
       middlewares.checkEntityExists(Product, 'productId'),

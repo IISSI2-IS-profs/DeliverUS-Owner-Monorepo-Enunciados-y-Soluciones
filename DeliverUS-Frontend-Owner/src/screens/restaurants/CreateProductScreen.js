@@ -13,12 +13,14 @@ import * as yup from 'yup'
 import { ErrorMessage, Formik } from 'formik'
 import TextError from '../../components/TextError'
 
-export default function CreateProductScreen ({ navigation, route }) {
+export default function CreateProductScreen({ navigation, route }) {
   const [open, setOpen] = useState(false)
   const [productCategories, setProductCategories] = useState([])
   const [backendErrors, setBackendErrors] = useState()
-
-  const initialProductValues = { name: null, description: null, price: null, order: null, restaurantId: route.params.id, productCategoryId: null, availability: true }
+  // BEGIN SOLUTION
+  // Added initial value for promote property
+  const initialProductValues = { name: null, description: null, price: null, order: null, restaurantId: route.params.id, productCategoryId: null, availability: true, promoted: false }
+  // END SOLUTION
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -43,7 +45,7 @@ export default function CreateProductScreen ({ navigation, route }) {
   })
 
   useEffect(() => {
-    async function fetchProductCategories () {
+    async function fetchProductCategories() {
       try {
         const fetchedProductCategories = await getProductCategories()
         const fetchedProductCategoriesReshaped = fetchedProductCategories.map((e) => {
@@ -134,7 +136,7 @@ export default function CreateProductScreen ({ navigation, route }) {
                 style={{ backgroundColor: GlobalStyles.brandBackground }}
                 dropDownStyle={{ backgroundColor: '#fafafa' }}
               />
-              <ErrorMessage name={'productCategoryId'} render={msg => <TextError>{msg}</TextError> }/>
+              <ErrorMessage name={'productCategoryId'} render={msg => <TextError>{msg}</TextError>} />
 
               <TextRegular>Is it available?</TextRegular>
               <Switch
@@ -147,7 +149,7 @@ export default function CreateProductScreen ({ navigation, route }) {
                   setFieldValue('availability', value)
                 }
               />
-              <ErrorMessage name={'availability'} render={msg => <TextError>{msg}</TextError> }/>
+              <ErrorMessage name={'availability'} render={msg => <TextError>{msg}</TextError>} />
 
               <Pressable onPress={() =>
                 pickImage(
@@ -167,7 +169,7 @@ export default function CreateProductScreen ({ navigation, route }) {
               }
 
               <Pressable
-                onPress={ handleSubmit }
+                onPress={handleSubmit}
                 style={({ pressed }) => [
                   {
                     backgroundColor: pressed
@@ -177,7 +179,7 @@ export default function CreateProductScreen ({ navigation, route }) {
                   styles.button
                 ]}>
                 <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-                  <MaterialCommunityIcons name='content-save' color={'white'} size={20}/>
+                  <MaterialCommunityIcons name='content-save' color={'white'} size={20} />
                   <TextRegular textStyle={styles.text}>
                     Save
                   </TextRegular>

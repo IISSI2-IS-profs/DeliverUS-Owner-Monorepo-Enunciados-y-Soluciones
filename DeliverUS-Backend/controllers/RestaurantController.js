@@ -11,10 +11,10 @@ exports.index = async function (req, res) {
       {
         attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
         include:
-      {
-        model: RestaurantCategory,
-        as: 'restaurantCategory'
-      },
+        {
+          model: RestaurantCategory,
+          as: 'restaurantCategory'
+        },
         order: [[{ model: RestaurantCategory, as: 'restaurantCategory' }, 'name', 'ASC']]
       }
     )
@@ -28,7 +28,8 @@ exports.indexOwner = async function (req, res) {
   try {
     const restaurants = await Restaurant.findAll(
       {
-        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
+        // Added discountCode and discountPercentage attributes to response object
+        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId', /* BEGIN SOLUTION */ 'discountPercentage' /* END SOLUTION */],
         where: { userId: req.user.id }
       })
     res.json(restaurants)
@@ -69,7 +70,7 @@ exports.show = async function (req, res) {
         model: RestaurantCategory,
         as: 'restaurantCategory'
       }],
-      order: [[{ model: Product, as: 'products' }, 'order', 'ASC']]
+      order: [[{ model: Product, as: 'products' }, 'order', 'ASC']],
     }
     )
     res.json(restaurant)

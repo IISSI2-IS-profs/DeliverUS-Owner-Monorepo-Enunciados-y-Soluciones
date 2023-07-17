@@ -14,12 +14,14 @@ import { showMessage } from 'react-native-flash-message'
 import { ErrorMessage, Formik } from 'formik'
 import TextError from '../../components/TextError'
 
-export default function CreateRestaurantScreen ({ navigation }) {
+export default function CreateRestaurantScreen({ navigation }) {
   const [open, setOpen] = useState(false)
   const [restaurantCategories, setRestaurantCategories] = useState([])
   const [backendErrors, setBackendErrors] = useState()
-
-  const initialRestaurantValues = { name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, restaurantCategoryId: null }
+  // BEGIN SOLUTION
+  // Added initial value for discountPercentage property
+  const initialRestaurantValues = { name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, restaurantCategoryId: null, discountPercentage: 0.0 }
+  // END SOLUTION
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -53,11 +55,19 @@ export default function CreateRestaurantScreen ({ navigation }) {
       .number()
       .positive()
       .integer()
-      .required('Restaurant category is required')
+      .required('Restaurant category is required'),
+    // BEGIN SOLUTION
+    discountPercentage: yup
+      .number()
+      .positive()
+      .integer()
+      .max(100, 'Discount percentage must be a float between 0 and 100')
+      .min(0, 'Discount percentage must be a float between 0 and 100'),
+    // END SOLUTION
   })
 
   useEffect(() => {
-    async function fetchRestaurantCategories () {
+    async function fetchRestaurantCategories() {
       try {
         const fetchedRestaurantCategories = await getRestaurantCategories()
         const fetchedRestaurantCategoriesReshaped = fetchedRestaurantCategories.map((e) => {
@@ -162,12 +172,21 @@ export default function CreateRestaurantScreen ({ navigation }) {
                 label='Phone:'
               />
 
+              {/* BEGIN SOLUTION
+                  Shows the components necessary to adjust the discount percentage properties.
+              */}
+              <InputItem
+                name='discountPercentage'
+                label='Discount percentage:'
+              />
+              {/*END SOLUTION*/}
+
               <DropDownPicker
                 open={open}
                 value={values.restaurantCategoryId}
                 items={restaurantCategories}
                 setOpen={setOpen}
-                onSelectItem={ item => {
+                onSelectItem={item => {
                   setFieldValue('restaurantCategoryId', item.value)
                 }}
                 setItems={setRestaurantCategories}
@@ -176,7 +195,7 @@ export default function CreateRestaurantScreen ({ navigation }) {
                 style={{ backgroundColor: GlobalStyles.brandBackground }}
                 dropDownStyle={{ backgroundColor: '#fafafa' }}
               />
-              <ErrorMessage name={'restaurantCategoryId'} render={msg => <TextError>{msg}</TextError> }/>
+              <ErrorMessage name={'restaurantCategoryId'} render={msg => <TextError>{msg}</TextError>} />
 
               <Pressable onPress={() =>
                 pickImage(
@@ -218,12 +237,12 @@ export default function CreateRestaurantScreen ({ navigation }) {
                   },
                   styles.button
                 ]}>
-              <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-                <MaterialCommunityIcons name='content-save' color={'white'} size={20}/>
-                <TextRegular textStyle={styles.text}>
-                  Save
-                </TextRegular>
-              </View>
+                <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
+                  <MaterialCommunityIcons name='content-save' color={'white'} size={20} />
+                  <TextRegular textStyle={styles.text}>
+                    Save
+                  </TextRegular>
+                </View>
               </Pressable>
             </View>
           </View>

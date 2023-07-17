@@ -74,7 +74,6 @@ const destroy = (route) => {
 
 const patch = (route, data = null) => {
   const { config, preparedData } = prepareData(data)
-
   return new Promise(function (resolve, reject) {
     axios.patch(route, preparedData, config)
       .then(response => {

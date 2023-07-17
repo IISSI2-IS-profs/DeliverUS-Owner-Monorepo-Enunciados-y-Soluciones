@@ -39,6 +39,12 @@ module.exports = {
         },
         onDelete: 'cascade'
       },
+      // BEGIN SOLUTION
+      promoted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      // END SOLUTION
       productCategoryId: {
         type: Sequelize.INTEGER,
         allowNull: false,
