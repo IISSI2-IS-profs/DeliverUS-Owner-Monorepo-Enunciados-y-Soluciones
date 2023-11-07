@@ -37,6 +37,15 @@ module.exports = (options) => {
       middlewares.handleValidation,
       RestaurantController.create)
 
+  // TODO: Ruta al falso toggle.
+  app.route('/restaurants/:restaurantId/toggle-online')
+    .patch(middlewares.isLoggedIn,
+      middlewares.hasRole('owner'),
+      middlewares.checkEntityExists(Restaurant, 'restaurantId'),
+      middlewares.checkRestaurantOwnership,
+      middlewares.checkValidStatusChange,
+      RestaurantController.toggleOnline)
+
   app.route('/restaurants/:restaurantId')
     .get(RestaurantController.show)
     .put(

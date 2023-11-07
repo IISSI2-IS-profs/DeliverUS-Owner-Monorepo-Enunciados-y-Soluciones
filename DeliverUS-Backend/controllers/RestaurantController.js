@@ -1,9 +1,11 @@
 'use strict'
+const { Op } = require('sequelize')
 const models = require('../models')
 const Restaurant = models.Restaurant
 const Product = models.Product
 const RestaurantCategory = models.RestaurantCategory
 const ProductCategory = models.ProductCategory
+const Order = models.Order
 
 exports.index = async function (req, res) {
   try {
@@ -29,7 +31,9 @@ exports.indexOwner = async function (req, res) {
     const restaurants = await Restaurant.findAll(
       {
         attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
-        where: { userId: req.user.id }
+        where: { userId: req.user.id },
+        // TODO: Orden por estado
+        order: [['status', 'ASC'], ['name', 'ASC']]
       })
     res.json(restaurants)
   } catch (err) {
@@ -105,6 +109,56 @@ exports.destroy = async function (req, res) {
     }
     res.json(message)
   } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
+// TODO: Función que hace el falso toggle.
+/* exports.toggleOnline = async function (req, res) {
+  try {
+    const restaurant = await Restaurant.findByPk(req.params.restaurantId)
+
+    if (restaurant.status === 'online' || restaurant.status === 'offline') {
+      restaurant.status = restaurant.status === 'online' ? 'offline' : 'online'
+
+      await restaurant.save({ fields: ['status'] })
+    }
+
+    res.json(restaurant)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+} */
+
+// TODO: Función que hace el falso toggle pero teniendo en cuenta que se nos pueden colar pedidos por medio que la pueden liar...
+// https://luschneider.com/blog/sequelize-transactions-and-locks-for-preventing-race-conditions
+exports.toggleOnline = async function (req, res) {
+  const t = await models.sequelize.transaction()
+  try {
+    const restaurant = await Restaurant.findByPk(req.params.restaurantId, { transaction: t })
+
+    const count = await Order.count({
+      where: {
+        restaurantId: req.params.restaurantId,
+        deliveredAt: { [Op.is]: null }
+      }
+    },
+    { lock: true, transaction: t }
+    )
+
+    if ((restaurant.status === 'online' || restaurant.status === 'offline') && count === 0) {
+      const newStatus = restaurant.status === 'online' ? 'offline' : 'online'
+      await Restaurant.update(
+        { status: newStatus },
+        { where: { id: req.params.restaurantId } },
+        { transaction: t }
+      )
+    }
+    await t.commit()
+    const updatedRestaurant = await Restaurant.findByPk(req.params.restaurantId)
+    res.json(updatedRestaurant)
+  } catch (err) {
+    await t.rollback()
     res.status(500).send(err)
   }
 }

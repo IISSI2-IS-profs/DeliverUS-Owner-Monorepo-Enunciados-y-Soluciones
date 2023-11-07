@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, FlatList, Pressable, View } from 'react-native'
 
-import { getAll, remove } from '../../api/RestaurantEndpoints'
+import { getAll, remove, toggleOnline } from '../../api/RestaurantEndpoints'
 import ImageCard from '../../components/ImageCard'
 import TextSemiBold from '../../components/TextSemibold'
 import TextRegular from '../../components/TextRegular'
@@ -18,15 +18,35 @@ export default function RestaurantsScreen ({ navigation, route }) {
   const [restaurantToBeDeleted, setRestaurantToBeDeleted] = useState(null)
   const { loggedInUser } = useContext(AuthorizationContext)
 
+  // TODO: Control del refresco del listado
+  const [refresh, setRefresh] = useState(false)
   useEffect(() => {
     if (loggedInUser) {
       fetchRestaurants()
     } else {
       setRestaurants(null)
     }
-  }, [loggedInUser, route])
+    setRefresh(false)
+  }, [loggedInUser, route, refresh])
+
+  // TODO: Llamada a la función principal y control de errores
+  const changeStatus = async (id) => {
+    try {
+      await toggleOnline(id)
+      setRefresh(true)
+    } catch (error) {
+      console.log(error)
+      showMessage({
+        message: `There was an error while trying to toggle status. ${error} `,
+        type: 'error',
+        style: GlobalStyles.flashStyle,
+        titleStyle: GlobalStyles.flashTextStyle
+      })
+    }
+  }
 
   const renderRestaurant = ({ item }) => {
+    // TODO: inclusión de status en la visualización y de tercer botón para poner a online/offline
     return (
       <ImageCard
         imageUri={item.logo ? { uri: process.env.API_BASE_URL + '/' + item.logo } : restaurantLogo}
@@ -35,9 +55,12 @@ export default function RestaurantsScreen ({ navigation, route }) {
           navigation.navigate('RestaurantDetailScreen', { id: item.id })
         }}
       >
-        <TextRegular numberOfLines={2}>{item.description}</TextRegular>
+        <TextRegular numberOfLines={4}>{item.description}</TextRegular>
         {item.averageServiceMinutes !== null &&
           <TextSemiBold>Avg. service time: <TextSemiBold textStyle={{ color: GlobalStyles.brandPrimary }}>{item.averageServiceMinutes} min.</TextSemiBold></TextSemiBold>
+        }
+        {
+          <TextSemiBold>This restaurant is <TextSemiBold textStyle={{ color: GlobalStyles.brandPrimary }}>{item.status}</TextSemiBold></TextSemiBold>
         }
         <TextSemiBold>Shipping: <TextSemiBold textStyle={{ color: GlobalStyles.brandPrimary }}>{item.shippingCosts.toFixed(2)}€</TextSemiBold></TextSemiBold>
         <View style={styles.actionButtonsContainer}>
@@ -77,7 +100,31 @@ export default function RestaurantsScreen ({ navigation, route }) {
             </TextRegular>
           </View>
         </Pressable>
+        { (item.status === 'online' || item.status === 'offline') &&
+        <Pressable
+            onPress={() => {
+              changeStatus(item.id)
+            }}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed
+                  ? GlobalStyles.brandSuccessTap
+                  : GlobalStyles.brandSuccessDisabled
+              },
+              styles.actionButton
+            ]}>
+          <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
+            <MaterialCommunityIcons name='update' color={'white'} size={20}/>
+            <TextRegular textStyle={styles.text}>
+              {item.status !== 'online' ? 'online' : 'offline'}
+            </TextRegular>
+
+          </View>
+        </Pressable>
+
+        }
         </View>
+
       </ImageCard>
     )
   }
@@ -173,7 +220,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
     </>
   )
 }
-
+// TODO: Cambio en el estilo para controlar el tamaño de los botones
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -195,7 +242,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'center',
     flexDirection: 'column',
-    width: '50%'
+    width: '33%'
   },
   actionButtonsContainer: {
     flexDirection: 'row',
